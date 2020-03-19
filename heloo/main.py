@@ -23,9 +23,15 @@ while running:
 
     # appliquer l'arrire plan de notre jeu
     screen.blit(background, (0, -200))
+    # recupere les projectiles du joueur
+    for projectile in game.player.all_projectiles:
+        projectile.move()
 
     #applique l'image de joueur
     screen.blit(game.player.image , game.player.rect)
+    #appliquer l'ensemble des images de mon groupe de projectiles
+    game.player.all_projectiles.draw(screen)
+
 
     #verifier si le joueur souhaite aller a gouche ou a droite
     if game.pressed.get(pygame.K_RIGHT)and game.player.rect.x + game.player.rect.width < screen.get_width():
@@ -44,9 +50,14 @@ while running:
             running = False
             pygame.quit()
             print("fermeture du jeu")
-         #detecter si un joueur lache une touche du clavier
+        #detecter si un joueur lache une touche du clavier
         elif event.type == pygame.KEYDOWN:
             game.pressed[event.key] = True
+
+         #DETECTERsi la barre d'espace est apuiyer
+            if event.key == pygame.K_SPACE:
+             game.player.lanch_projectile()
+
         elif event.type == pygame.KEYUP:
             game.pressed[event.key] = False
 
